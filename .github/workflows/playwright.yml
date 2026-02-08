@@ -1,4 +1,8 @@
 name: Playwright BDD Tests
+permissions:
+  contents: write      
+  pull-requests: write 
+  issues: write        
 on:
   push:
     branches: [ main, master ]
@@ -24,8 +28,8 @@ jobs:
     - name: Heal Tests with Agent
       if: steps.tests.outcome == 'failure'
       run: |
-        gh extension install github/agent-task
-        gh agent-task create "The Playwright tests failed. Analyze the logs in the last run and fix the issue."
+        gh extension install github/gh-agent-task --force
+        gh agent-task create "The Playwright tests failed. Analyze the result cucumber-report.html in reports folder in the last run and fix the issue."
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Test Results Summary
