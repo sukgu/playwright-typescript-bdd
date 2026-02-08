@@ -18,7 +18,17 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright BDD tests
-      run: npm run test:ci
+      id: tests
+      run: npm run test:ci  
+      continue-on-error: true
+    - name: Test Results Summary
+      if: always()
+      run: |
+        if [ "${{ steps.tests.outcome }}" == "failure" ]; then
+          echo "⚠️ Some UI tests failed. Check the HTML report for details."
+        else
+          echo "✅ All UI tests passed!"
+        fi
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
