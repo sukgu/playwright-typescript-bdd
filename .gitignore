@@ -9,7 +9,6 @@ node_modules/
 
 # Cucumber reports
 /reports/
-*.json
 *.log
 
 # TypeScript

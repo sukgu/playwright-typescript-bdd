@@ -1,0 +1,27 @@
+{
+  "name": "playwright-typescript",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" features",
+    "test:bdd": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" features",
+    "test:bdd:smoke": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --tags @smoke features",
+    "test:bdd:auth": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --tags @authentication features",
+    "test:bdd:login": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --tags @login features",
+    "test:bdd:html": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --format html:reports/cucumber-report.html features",
+    "test:debug": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --fail-fast features",
+    "report": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --format html:reports/cucumber-report.html features && start reports/cucumber-report.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^25.0.6",
+    "@cucumber/cucumber": "^10.8.0",
+    "@cucumber/pretty-formatter": "^1.0.1",
+    "ts-node": "^10.9.2"
+  }
+}
