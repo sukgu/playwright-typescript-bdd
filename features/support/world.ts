@@ -25,8 +25,8 @@ export class PlaywrightWorld extends World {
     console.log(`🚀 Launching ${selectedBrowser} browser (headless: ${headless})`);
 
     const launchOptions = { 
-      headless: headless === 'true', 
-      slowMo: slowMo > 0 ? parseInt(slowMo, 10) : undefined 
+      headless, 
+      slowMo: slowMo > 0 ? slowMo : undefined 
     };
     
     switch (selectedBrowser.toLowerCase()) {
@@ -44,7 +44,7 @@ export class PlaywrightWorld extends World {
     this.page = await this.context.newPage();
     
     // Set timeout from environment
-    this.page.setDefaultTimeout(parseFloat(env.get('timeout')));
+    this.page.setDefaultTimeout(env.get('timeout'));
   }
 
   async cleanup() {

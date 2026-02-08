@@ -2,12 +2,39 @@ import dotenv from 'dotenv';
 import path from 'path';
 
 /**
+ * Configuration interface for environment settings
+ */
+export interface Config {
+  // Browser Settings
+  headless: boolean;
+  browser: string;
+  slowMo: number;
+  
+  // URLs
+  appUrl: string;
+  baseUrl: string;
+  
+  // Test Configuration
+  timeout: number;
+  workers: number;
+  retries: number;
+  
+  // Features
+  debugMode: boolean;
+  screenshots: string;
+  trace: string;
+  
+  // Environment
+  environment: string;
+}
+
+/**
  * Environment Configuration Loader
  * Loads the appropriate .env file based on NODE_ENV
  */
 export class EnvLoader {
   private static instance: EnvLoader;
-  private config: { [key: string]: string } = {};
+  private config: Config = {} as Config;
 
   private constructor() {
     this.loadEnvironment();
@@ -33,26 +60,26 @@ export class EnvLoader {
     console.log(`🌍 Loading environment: ${nodeEnv.toUpperCase()}`);
     console.log(`📄 Environment file: ${envFile}`);
     
-    dotenv.config({ path: envPath });
+    dotenv.config({ path: envPath, override: true });
     
     // Store processed config
     this.config = {
       // Browser Settings
-      headless: this.getBool('HEADLESS', nodeEnv === 'ci' || nodeEnv === 'production').toString(),
+      headless: this.getBool('HEADLESS', nodeEnv === 'ci' || nodeEnv === 'production'),
       browser: process.env.BROWSER || 'chromium',
-      slowMo: this.getNumber('SLOW_MO', 0).toString(),
+      slowMo: this.getNumber('SLOW_MO', 0),
       
       // URLs
       appUrl: process.env.APP_URL || 'https://www.saucedemo.com/',
       baseUrl: process.env.BASE_URL || process.env.APP_URL || 'https://www.saucedemo.com/',
       
       // Test Configuration  
-      timeout: this.getNumber('TIMEOUT', 30000).toString(),
-      workers: this.getNumber('WORKERS', 1).toString(),
-      retries: this.getNumber('RETRIES', 0).toString(),
+      timeout: this.getNumber('TIMEOUT', 30000),
+      workers: this.getNumber('WORKERS', 1),
+      retries: this.getNumber('RETRIES', 0),
       
       // Features
-      debugMode: this.getBool('DEBUG_MODE', false).toString(),
+      debugMode: this.getBool('DEBUG_MODE', false),
       screenshots: process.env.SCREENSHOTS || 'on-failure',
       trace: process.env.TRACE || 'on-failure',
       
@@ -78,11 +105,11 @@ export class EnvLoader {
     return isNaN(parsed) ? defaultValue : parsed;
   }
 
-  public get(key: keyof typeof EnvLoader.prototype.config): any {
+  public get<K extends keyof Config>(key: K): Config[K] {
     return this.config[key];
   }
 
-  public getAll(): { [key: string]: string } {
+  public getAll(): Config {
     return { ...this.config };
   }
 }
