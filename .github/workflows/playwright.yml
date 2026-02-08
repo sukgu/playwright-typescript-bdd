@@ -21,6 +21,13 @@ jobs:
       id: tests
       run: npm run test:ci  
       continue-on-error: true
+    - name: Heal Tests with Agent
+      if: steps.tests.outcome == 'failure'
+      run: |
+        gh extension install github/agent-task
+        gh agent-task create "The Playwright tests failed. Analyze the logs in the last run and fix the issue."
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Test Results Summary
       if: always()
       run: |
