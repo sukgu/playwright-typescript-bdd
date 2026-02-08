@@ -30,7 +30,7 @@ jobs:
       run: |
         gh agent-task create "The Playwright tests failed. Analyze the result cucumber-report.html in reports folder in the last run and fix the issue."
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.AGENT_PAT }}
     - name: Test Results Summary
       if: always()
       run: |
