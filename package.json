@@ -4,12 +4,18 @@
   "main": "index.js",
   "scripts": {
     "test": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" features",
+    "test:local": "cross-env NODE_ENV=local npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --format html:reports/cucumber-report.html features && start reports/cucumber-report.html",
+    "test:ci": "cross-env NODE_ENV=ci npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --format html:reports/cucumber-report.html features && start reports/cucumber-report.html",
+    "test:staging": "cross-env NODE_ENV=staging npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" features",
+    "test:production": "cross-env NODE_ENV=production npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --tags @smoke features",
     "test:bdd": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" features",
-    "test:bdd:smoke": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --tags @smoke features",
-    "test:bdd:auth": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --tags @authentication features",
-    "test:bdd:login": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --tags @login features",
-    "test:bdd:html": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --format html:reports/cucumber-report.html features",
-    "test:debug": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --fail-fast features",
+    "test:headed": "cross-env NODE_ENV=local npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" features",
+    "test:headless": "cross-env NODE_ENV=ci npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" features",
+    "test:bdd:smoke": "cross-env NODE_ENV=local npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --tags @smoke features",
+    "test:bdd:auth": "cross-env NODE_ENV=local npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --tags @authentication features",
+    "test:bdd:login": "cross-env NODE_ENV=local npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --tags @login features",
+    "test:bdd:html": "cross-env NODE_ENV=local npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --format html:reports/cucumber-report.html features",
+    "test:debug": "cross-env NODE_ENV=local npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --fail-fast features",
     "report": "npx cucumber-js --require-module ts-node/register --require \"./features/**/*.ts\" --format html:reports/cucumber-report.html features && start reports/cucumber-report.html"
   },
   "keywords": [],
@@ -18,10 +24,12 @@
   "type": "commonjs",
   "description": "",
   "devDependencies": {
-    "@playwright/test": "^1.57.0",
-    "@types/node": "^25.0.6",
     "@cucumber/cucumber": "^10.8.0",
     "@cucumber/pretty-formatter": "^1.0.1",
+    "@playwright/test": "^1.57.0",
+    "@types/node": "^25.0.6",
+    "cross-env": "^10.1.0",
+    "dotenv": "^17.2.4",
     "ts-node": "^10.9.2"
   }
 }
