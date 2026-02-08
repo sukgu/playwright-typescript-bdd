@@ -28,6 +28,7 @@ jobs:
     - name: Heal Tests with Agent
       if: steps.tests.outcome == 'failure'
       run: |
+        gh auth login
         gh agent-task create "The Playwright tests failed. Analyze the result cucumber-report.html in reports folder in the last run and fix the issue."
       env:
         GH_TOKEN: ${{ secrets.AGENT_PAT }}
